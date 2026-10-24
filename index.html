@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <!-- This is where the browser is told what kind of character set is being used and how to scale the page -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upcoming Reminders</title>
+    <link rel="stylesheet" href="paperstatstyle.css" />
+    <link rel="stylesheet" href="common-nav.css" />
+    <link rel="icon" href="imgtitle.jpg" >
+
+
+  </head>
+  
+  <body>
+    <aside class="sidebar">
+  <a href="homepage.html" class="logo">
+    <span class="logo-icon">✳</span>
+    <span>A-Star</span>
+  </a>
+
+  <p class="sidebar-label">YOUR WORKSPACE</p>
+
+  <nav class="sidebar-nav">
+    <a href="studyhubtimer.html" class="nav">
+      <span>◷</span> Focus
+    </a>
+    <a href="index.html#remindersss" class="nav">
+      <span>☷</span> Tasks
+    </a>
+    <a href="index.html#marks-title" class="nav">
+      <span>✦</span> PP Tracker
+    </a>
+    <a href="homepage.html#team" class="nav">
+      <span>👥</span> Team
+    </a>
+    <a href="homepage.html#contactme" class="nav">
+      <span>☎︎</span> Contact Us
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <span class="status-dot"></span>
+    Your space to grow
+  </div>
+</aside>
+
+
+    <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+    <main class="page-shell">
+      
+      <section class="reminders-card">
+        <header class="card-header">
+          <h2 id="remindersss">Upcoming Reminders &amp; Deadlines</h2>
+        </header>
+
+        <div class="reminders-list" id="reminders-list" aria-live="polite"></div>
+
+        <footer class="card-footer">
+          <span class="footer-note">Keep dates updated for exam readiness</span>
+          <button class="add-btn" id="footer-add-btn" type="button">+ New Deadline</button>
+        </footer>
+      
+      </section>
+
+      <section class="marks-card" aria-labelledby="marks-title">
+        
+        <header class="marks-header">
+          
+          <div>
+            <h2 id="marks-title">Past Paper Marks</h2>
+            <p>Track your Cambridge paper scores by session and variant.</p>
+          </div>
+          <button class="add-btn" id="add-mark-btn" type="button">+ Add Mark</button>
+        
+        </header>
+        
+        <!-- This part displays the table where recorded marks will be listed -->
+        
+        <div class="marks-table-wrap">
+          
+          <table class="marks-table">
+            
+            <thead>
+              <tr>
+                <th scope="col">Qualification</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Session</th>
+                <th scope="col">Paper</th>
+                <th scope="col">Marks</th>
+                <th scope="col">Score</th>
+                <th scope="col"><span class="visually-hidden">Actions</span></th>
+              </tr>
+            
+            </thead>
+            
+            <tbody id="marks-list"></tbody>
+          
+          </table>
+          
+          <!--gives the user a message if there are no marks recorded yet --> 
+          <p class="empty-state" id="marks-empty">No marks recorded yet. Add a past paper score to get started.</p>
+        
+        </div>
+        
+        <!-- area for calculating the average score of specific papers --> 
+        
+        <section class="average-panel" aria-labelledby="average-title">
+          
+          <div class="average-heading">
+           
+            <h3 id="average-title">Subject paper average</h3>
+            <p>Choose a paper to see your average across saved attempts.</p>
+          
+          </div>
+          <div class="average-controls">
+            
+            <!-- filtering dropdowns for calculating averages -->
+            <label>
+              Qualification
+              <select id="average-qualification"></select>
+            </label>
+            
+            <label>
+              Subject
+              <select id="average-subject"></select>
+            </label>
+            
+            <label>
+              Paper
+              <select id="average-paper"></select>
+            </label>
+          </div>
+          
+          <p class="average-result" id="average-result" aria-live="polite">Add a past paper mark to calculate an average.</p>
+        
+        </section>
+      
+      </section>
+    
+    </main>
+
+    <!-- popup for adding a new reminder -->
+    <dialog class="reminder-dialog" id="reminder-dialog" aria-labelledby="dialog-title">
+      
+      <form id="reminder-form">
+        
+        <h2 id="dialog-title">Add reminder</h2>
+        
+        <label>
+          Title
+          <input name="title" type="text" maxlength="80" required />
+        </label>
+        
+        <label>
+          Subject or details
+          <input name="details" type="text" maxlength="80" placeholder="e.g. CIE A Level - 9702" />
+        </label>
+        
+        <label>
+          Date
+          <input name="date" type="date" required />
+        </label>
+        
+        <label>
+          Type
+          <select name="type">
+            <option value="Exam">Exam</option>
+            <option value="Deadline">Deadline</option>
+          </select>
+        </label>
+        
+        <div class="dialog-actions">
+          <button class="cancel-btn" id="cancel-btn" type="button">Cancel</button>
+          <button class="save-btn" type="submit">Save</button>
+        </div>
+      
+      </form>
+    
+    </dialog>
+
+    <!-- popup for adding past paper marks -->
+    <dialog class="reminder-dialog" id="mark-dialog" aria-labelledby="mark-dialog-title">
+      
+      <form id="mark-form">
+        
+        <h2 id="mark-dialog-title">Add past paper mark</h2>
+        <label>
+          Qualification
+          
+          <select name="qualification" required>
+            <option value="IGCSE">IGCSE</option>
+            <option value="O Level">O Level</option>
+            <option value="AS Level">AS Level</option>
+            <option value="A Level">A Level</option>
+          
+          </select>
+        
+        </label>
+        
+        <label>
+          
+          Subject
+          <input name="subject" type="text" maxlength="60" placeholder="e.g. Physics" required />
+        
+        </label>
+        <label>
+          
+          Subject code <span class="optional-label">(optional)</span>
+          <input name="subjectCode" type="text" maxlength="10" placeholder="e.g. 9702" />
+        
+        </label>
+        
+        <div class="mark-form-row">
+          
+          <label>
+            Session
+            
+            <select name="session" required>
+              <option value="Feb/March">Feb/March</option>
+              <option value="May/June">May/June</option>
+              <option value="Oct/Nov">Oct/Nov</option>
+            
+            </select>
+         
+          </label>
+          
+          <label>
+            
+            Year
+            <input name="year" type="number" min="2000" max="2100" value="2026" required />
+          
+          </label>
+        </div>
+        <div class="mark-form-row">
+          
+          <label>
+            Paper
+            
+            <select name="paper" required>
+              <option value="1">Paper 1</option>
+              <option value="2">Paper 2</option>
+              <option value="3">Paper 3</option>
+              <option value="4">Paper 4</option>
+              <option value="5">Paper 5</option>
+              <option value="6">Paper 6</option>
+            </select>
+          
+          </label>
+          
+          <label>
+            Variant
+            
+            <select name="variant" required>
+              
+              <option value="1">Variant 1</option>
+              <option value="2">Variant 2</option>
+              <option value="3">Variant 3</option>
+            
+            </select>
+          </label>
+        </div>
+        
+        <div class="mark-form-row">
+          
+          <label>
+           
+            Marks obtained
+            <input name="obtained" type="number" min="0" step="any" required />
+          
+          </label>
+          
+          <label>
+            
+            Total marks
+            <input name="total" type="number" min="1" step="any" required />
+          
+          </label>
+        </div>
+        
+        <div class="dialog-actions">
+          
+          <button class="cancel-btn" id="cancel-mark-btn" type="button">Cancel</button>
+          <button class="save-btn" type="submit">Save mark</button>
+        
+        </div>
+      
+      </form>
+    
+    </dialog>
+    
+    <script src="script.js"></script>
+    <script src="marks.js"></script>
+  
+  </body>
+</html>

@@ -1,0 +1,442 @@
+/* quick global reset so padding doesn't mess up element widths */
+* {
+  box-sizing: border-box;
+}
+
+/* center everything nicely and give it that warm paper background */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: #f1ebcf;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.cursor-glow {
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 180, 48, 0.2), rgba(232, 180, 48, 0.08) 35%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 180ms ease;
+}
+
+.cursor-glow.is-visible {
+  opacity: 1;
+}
+
+/* caps the max width so it doesn't stretch like crazy on huge monitors */
+.page-shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1180px;
+  padding: 30px 18px;
+}
+
+/* main card styling (reused for both sections) */
+.reminders-card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 20px;
+  padding: 18px 20px 10px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 12px 18px;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 800;
+  color: #1a2b3d;
+  letter-spacing: -0.02em;
+}
+
+/* stack reminders vertically */
+.reminders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* layout for each individual reminder row */
+.reminder-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(218, 232, 245, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 14px;
+  padding: 10px 14px 10px 12px;
+  min-height: 72px;
+}
+
+/* little calendar date box on the left side */
+.date-badge {
+  width: 54px;
+  min-width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  background: #dfeefc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #1c7fe9;
+  line-height: 1;
+}
+
+.date-badge .date-num {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.date-badge .date-month {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+/* text info area inside the reminder item */
+.reminder-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.reminder-info h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a2b3d;
+  letter-spacing: -0.01em;
+}
+
+.reminder-info p {
+  margin: 3px 0 0;
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* pill tags */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 72px;
+}
+
+/* color variants for tags */
+.tag-exam {
+  background: #fbe3e6;
+  color: #e04d5f;
+}
+
+.tag-deadline {
+  background: #dfeefc;
+  color: #1e7fe8;
+}
+
+/* actions container on the right of reminders */
+.reminder-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.row-action {
+  border: 0;
+  background: transparent;
+  color: #526477;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.row-action:hover {
+  color: #1e7fe8;
+  text-decoration: underline;
+}
+
+/* turns delete button red on hover so user knows it's destructive */
+.row-action.remove-btn:hover {
+  color: #d14353;
+}
+
+.empty-state {
+  padding: 24px 12px;
+  color: #64748b;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* native <dialog> popup styling */
+.reminder-dialog {
+  width: min(420px, calc(100% - 32px));
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  color: #1a2b3d;
+  box-shadow: 0 16px 50px rgba(15, 23, 42, 0.2);
+}
+
+/* dims the background when the dialog is popped up */
+.reminder-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.35);
+}
+
+.reminder-dialog h2 {
+  margin: 0 0 18px;
+  font-size: 20px;
+}
+
+.reminder-dialog form,
+.reminder-dialog label {
+  display: flex;
+  flex-direction: column;
+}
+
+.reminder-dialog form {
+  gap: 14px;
+}
+
+.reminder-dialog label {
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.reminder-dialog input,
+.reminder-dialog select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px;
+  background: white;
+  color: inherit;
+  font: inherit;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.dialog-actions button {
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #eef2f7;
+  color: #334155;
+}
+
+.save-btn {
+  background: #1e7fe8;
+  color: white;
+}
+
+/* marks / grades card container */
+.marks-card {
+  margin-top: 22px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+}
+
+.marks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.marks-header h2 {
+  margin: 0;
+  color: #1a2b3d;
+  font-size: 19px;
+}
+
+.marks-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* wrap table so it scrolls horizontally instead of breaking the layout on mobile */
+.marks-table-wrap {
+  overflow-x: auto;
+}
+
+.marks-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.marks-table th,
+.marks-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  white-space: nowrap;
+}
+
+.marks-table th {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.marks-table td {
+  color: #1a2b3d;
+  font-size: 13px;
+}
+
+/* push actions to the right side of the table */
+.marks-table td:last-child {
+  text-align: right;
+}
+
+.marks-table .row-action + .row-action {
+  margin-left: 10px;
+}
+
+.marks-table-wrap .empty-state {
+  margin: 0;
+}
+
+/* bottom average calculator box */
+.average-panel {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(218, 232, 245, 0.42);
+}
+
+.average-heading h3 {
+  margin: 0;
+  color: #1a2b3d;
+  font-size: 15px;
+}
+
+.average-heading p {
+  margin: 5px 0 14px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.average-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.average-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.average-controls select {
+  min-width: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px;
+  background: white;
+  color: #1a2b3d;
+  font: inherit;
+}
+
+.average-result {
+  margin: 14px 0 0;
+  color: #1e7fe8;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.mark-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.optional-label {
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* hide elements visually while keeping them accessible for screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding: 14px 8px 2px;
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.footer-note {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.add-btn {
+  border: none;
+  background: transparent;
+  color: #1e7fe8;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.add-btn:hover {
+  text-decoration: underline;
+}

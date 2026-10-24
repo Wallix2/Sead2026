@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--All the meta tags and the linking files-->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A* Timer</title>
+    <link rel="stylesheet" href="studyhubtimer.css" />
+    <link rel="stylesheet" href="common-nav.css" />
+    <link rel="icon" href="imgtitle.jpg" >
+
+
+  </head>
+  <body>
+    <aside class="sidebar">
+  <a href="homepage.html" class="logo">
+    <span class="logo-icon">✳</span>
+    <span>A-Star</span>
+  </a>
+
+  <p class="sidebar-label">YOUR WORKSPACE</p>
+
+  <nav class="sidebar-nav">
+    <a href="studyhubtimer.html" class="nav">
+      <span>◷</span> Focus
+    </a>
+    <a href="index.html" class="nav">
+      <span>☷</span> Tasks
+    </a>
+    <a href="index.html" class="nav">
+      <span>✦</span> PP Tracker
+    </a>
+    <a href="homepage.html#team" class="nav">
+      <span>👥</span> Team
+    </a>
+    <a href="homepage.html#contactme" class="nav">
+      <span>☎︎</span> Contact Us
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <span class="status-dot"></span>
+    Your space to grow
+  </div>
+</aside>
+
+
+
+    <h1 class="visually-hidden">A-Star Timer</h1>
+    <!-- This is where the section timer goes -->
+    <main class="app-shell">
+      <section class="timer-card" aria-label="Study timer card">
+        <header class="topbar">
+          <div class="brand">
+            <div class="brand-mark">
+              <img src="imgtitle.jpg" alt="A-Star logo" />
+            </div>
+            <span>A-Star</span>
+          </div>
+          <span class="status-pill">Focus mode</span>
+        </header>
+
+        <!-- This is where you change time-->
+        <div class="mode-toggle" aria-label="Timer mode selector">
+          <button class="mode-btn active" data-mode="focus" data-minutes="25">Focus</button>
+          <button class="mode-btn" data-mode="shortBreak" data-minutes="5">Short break</button>
+          <button class="mode-btn" data-mode="longBreak" data-minutes="15">Long break</button>
+        </div>
+
+        <label class="custom-duration" for="timerMinutesInput">
+          <span>Custom minutes</span>
+          <input id="timerMinutesInput" type="number" min="1" max="180" value="25" />
+        </label>
+
+        <div class="timer-wrap">
+          <div class="ring" id="timerRing" aria-hidden="true">
+            <div class="ring-inner">
+              <p class="timer-label">Time left</p>
+              <div id="timerDisplay" class="timer-display">25:00</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <label class="stat-box" for="sessionInput">
+            <span class="stat-label">Sessions</span>
+            <input id="sessionInput" type="number" min="0" value="4" />
+          </label>
+          <label class="stat-box" for="goalInput">
+            <span class="stat-label">Goal</span>
+            <div class="input-with-unit">
+              <input id="goalInput" type="number" min="0" value="2" />
+              <span class="unit">hrs</span>
+            </div>
+          </label>
+          <label class="stat-box" for="streakInput">
+            <span class="stat-label">Streak</span>
+            <div class="input-with-unit">
+              <input id="streakInput" type="number" min="0" value="7" />
+              <span class="unit">days</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="controls">
+          <button id="startPauseBtn" class="primary-btn">Start</button>
+          <button id="resetBtn" class="secondary-btn">Reset</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="studyhubtimer.js"></script>
+  </body>
+</html>

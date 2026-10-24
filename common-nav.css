@@ -1,0 +1,221 @@
+/* =========================================================
+   A-Star | common-nav.css
+   Shared across EVERY page: sidebar, logo, status dot,
+   and the content offset. Includes its own fonts and sizes
+   so the sidebar/logo look identical on all pages.
+   Page body text is NOT styled here: each page owns that.
+   Load this BEFORE the page's own CSS.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* colors */
+  --nav-bg: #FFFCF0;
+  --nav-border: #E7DDB5;
+  --nav-text: #20334A;
+  --nav-link: #53677D;
+  --nav-muted: #6F7D8D;
+  --nav-accent: #007FFF;
+  --nav-accent-light: #DCEEFF;
+  --nav-focus: #b7a7f5;
+
+  /* fonts */
+  --nav-font-body: 'DM Sans', sans-serif;
+  --nav-font-heading: 'Manrope', sans-serif;
+
+  /* widths */
+  --nav-width: 245px;
+  --nav-width-md: 190px;
+  --nav-width-sm: 66px;
+}
+
+/* ---------- Scoped reset (so it doesn't depend on page CSS) ---------- */
+.sidebar,
+.sidebar *,
+.sidebar *::before,
+.sidebar *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- Sidebar shell ---------- */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--nav-width);
+  height: 100vh;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  background: var(--nav-bg);
+  border-right: 1px solid var(--nav-border);
+  font-family: var(--nav-font-body);
+  line-height: 1.5;
+  z-index: 100;
+}
+
+/* ---------- Logo ---------- */
+.sidebar .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 48px;
+  font-family: var(--nav-font-heading);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--nav-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sidebar .logo-icon {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  flex-shrink: 0;
+  background: var(--nav-accent-light);
+  color: var(--nav-accent);
+  border-radius: 12px;
+  font-size: 24px;
+}
+
+/* ---------- Section label ---------- */
+.sidebar-label {
+  padding-left: 12px;
+  margin-bottom: 14px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--nav-muted);
+}
+
+/* ---------- Links ---------- */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-nav .nav {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 14px;
+  border-radius: 12px;
+  color: var(--nav-link);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.sidebar-nav .nav span {
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 19px;
+}
+
+.sidebar-nav .nav:hover,
+.sidebar-nav .nav:focus-visible,
+.sidebar-nav .nav.active {
+  background: var(--nav-accent-light);
+  color: var(--nav-accent);
+}
+
+.sidebar a:focus-visible {
+  outline: 3px solid var(--nav-focus);
+  outline-offset: 3px;
+}
+
+/* ---------- Bottom status ---------- */
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 15px 8px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  color: var(--nav-muted);
+  border-top: 1px solid var(--nav-border);
+}
+
+.sidebar .status-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  background: var(--nav-accent);
+  border-radius: 50%;
+}
+
+/* ---------- Push page content right of the sidebar ---------- */
+.sidebar ~ main {
+  width: auto;
+  max-width: 1180px;
+  margin-left: calc(var(--nav-width) + 40px);
+  margin-right: 35px;
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 900px) {
+  .sidebar {
+    width: var(--nav-width-md);
+    padding: 24px 14px;
+  }
+
+  .sidebar .logo {
+    font-size: 17px;
+  }
+
+  .sidebar ~ main {
+    margin-left: calc(var(--nav-width-md) + 25px);
+    margin-right: 20px;
+  }
+}
+
+/* ---------- Phone: icon-only rail ---------- */
+@media (max-width: 600px) {
+  .sidebar {
+    width: var(--nav-width-sm);
+    padding: 20px 8px;
+    align-items: center;
+  }
+
+  .sidebar .logo {
+    margin-bottom: 35px;
+  }
+
+  .sidebar .logo-text,
+  .sidebar-label,
+  .sidebar-note,
+  .sidebar-nav .nav-label {
+    display: none;
+  }
+
+  .sidebar-nav {
+    width: 100%;
+  }
+
+  .sidebar-nav .nav {
+    justify-content: center;
+    padding: 13px 5px;
+  }
+
+  .sidebar-nav .nav span {
+    font-size: 21px;
+  }
+
+  .sidebar-bottom {
+    justify-content: center;
+    padding: 15px 0;
+  }
+
+  .sidebar ~ main {
+    margin-left: calc(var(--nav-width-sm) + 16px);
+    margin-right: 16px;
+  }
+}
